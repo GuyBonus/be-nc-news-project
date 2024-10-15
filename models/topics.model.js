@@ -4,7 +4,7 @@ const fetchTopics = () => {
   return db
     .query('SELECT * FROM topics;')
     .then(result => result.rows)
-    .catch(err => console.log(err));
+    .catch(err => err);
 };
 
 module.exports = fetchTopics;
