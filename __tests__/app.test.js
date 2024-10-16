@@ -5,6 +5,8 @@ const db = require('../db/connection.js');
 
 const seed = require('../db/seeds/seed.js');
 
+const endpoints = require('../endpoints.json');
+
 beforeAll(() => seed(data));
 
 afterAll(() => db.end());
@@ -25,6 +27,17 @@ describe('/api/topics', () => {
           });
         });
     });
+  });
+});
+
+describe('GET /api', () => {
+  test('status -200: will act as documentation detailing all of the available API endpoints.', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.endpoints).toEqual(endpoints);
+      });
   });
 });
 
