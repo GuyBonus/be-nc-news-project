@@ -11,12 +11,18 @@ afterAll(() => db.end());
 
 describe('/api/topics', () => {
   describe('GET', () => {
-    test('status -200: responds with obj containint all topics', () => {
+    test('status -200: responds with obj containing all topics', () => {
       return request(app)
         .get('/api/topics')
         .expect(200)
         .then(response => {
-          expect(response.body.topics);
+          expect(response.body.topics.length).toBe(3);
+          response.body.topics.forEach(topic => {
+            expect(topic).toMatchObject({
+              slug: expect.any(String),
+              description: expect.any(String)
+            });
+          });
         });
     });
   });
