@@ -66,5 +66,26 @@ describe('GET /api', () => {
   });
 });
 
+// row 1 make sure that it return its content
+// ? 17 doen not exist
+// jdsjspspvsofr (not a number //)
 
-module.exports = app;
+describe('GET /api/articles/:article_id', () => {
+  test('status -200: returns an article object containing the correct article data', () => {
+    return request(app)
+      .get('/api/articles/1')
+      .expect(200)
+      .then(res => {
+        expect(res.body.article).toMatchObject({
+          article_id: 1,
+          title: 'Living in the shadow of a great man',
+          topic: 'mitch',
+          author: 'butter_bridge',
+          body: 'I find this existence challenging',
+          votes: 100,
+          article_img_url:
+            'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+        });
+      });
+  });
+});
