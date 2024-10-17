@@ -66,10 +66,6 @@ describe('GET /api', () => {
   });
 });
 
-// row 1 make sure that it return its content
-// ? 17 doen not exist
-// jdsjspspvsofr (not a number //)
-
 describe('GET /api/articles/:article_id', () => {
   test('status -200: returns an article object containing the correct article data', () => {
     return request(app)
@@ -86,6 +82,22 @@ describe('GET /api/articles/:article_id', () => {
           article_img_url:
             'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
         });
+      });
+  });
+  test('status -404: returns a 404 error if article NOT FOUND', () => {
+    return request(app)
+      .get('/api/articles/25')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ status: 404, msg: 'Not Found' });
+      });
+  });
+  test('status -400: returns a 400 error if invalud data type', () => {
+    return request(app)
+      .get('/api/articles/interstellar')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ status: 400, msg: 'Invalid data type' });
       });
   });
 });

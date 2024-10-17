@@ -15,4 +15,16 @@ app.get('/api', (req, res) => {
   res.status(200).send({ endpoints: endpoints });
 });
 
+app.use((err, req, res, next) => {
+  if (err.status && err.msg) {
+    res.status(err.status).send({ status: err.status, msg: err.msg });
+  } else next(err);
+});
+
+app.use((err, req, res, next) => {
+  if (err.code === '22P02') {
+    res.status(400).send({ status: 400, msg: 'Invalid data type' });
+  }
+});
+
 module.exports = app;

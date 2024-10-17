@@ -5,13 +5,15 @@ const fetchArticles = () => {
 };
 
 const fetchArticlesById = article_id => {
-  return db
-    .query(
-      'SELECT article_id, title, topic, votes, author, body, article_img_url FROM articles WHERE article_id = $1;',
-      [article_id]
-    )
-    .then(result => result.rows[0]);
+  return db.query('SELECT * FROM articles WHERE article_id = $1;', [article_id]).then(result => {
+    if (!result.rows[0]) {
+      return Promise.reject({
+        status: 404,
+        msg: 'Not Found'
+      });
+    }
+    return result.rows[0];
+  });
 };
 
 module.exports = { fetchArticles, fetchArticlesById };
-
